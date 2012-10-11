@@ -65,3 +65,18 @@ void PRINT_setupPinAsLED(int Pin)
   Serial.print(" as LED\n");
 }
 
+/**
+ * Fade Ratio 1.111 at 2222ms out of 3333ms
+ */
+#ifdef DEBUG_FRAME
+#define DEBUG_fadeRatio(...) PRINT_fadeRatio(__VA_ARGS__)
+#else
+#define DEBUG_fadeRatio(...) /* */
+#endif
+void PRINT_fadeRatio( double Ratio )
+{
+  Serial.print("Fade Ratio " );
+  Serial.print(Ratio);
+  Serial.print("\n");
+}
+

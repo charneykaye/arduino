@@ -8,8 +8,8 @@
  */
 
 // length (seconds) of a fade from one pin to the next
-const int TIME_TOTAL_FADE_SECONDS_FAST = .1;
-const int TIME_TOTAL_FADE_SECONDS_SLOW = 1;
+const float TIME_TOTAL_FADE_SECONDS_FAST = .1;
+const float TIME_TOTAL_FADE_SECONDS_SLOW = 1;
 
 // what pin is each LED connected to
 const int PIN_LED_WHITE = 5;
@@ -19,7 +19,10 @@ const int PIN_LED_GREEN = 10;
 const int PIN_LED_BLUE = 11;
 
 // what pin the pushbutton is connected to
-const int PIN_PUSHBUTTON = 7;
+const int PIN_BUTTON = 7;
+
+// pushbutton debounce time milliseconds; increase if the output flickers
+const long BUTTON_DEBOUNCE_DELAY_MILLIS = 50;
 
 // array of LED pins to setup, with a hard-coded total
 const int Lights[] = {
@@ -42,8 +45,12 @@ int i = 0;
 int pinFadeFrom = -1;
 int pinFadeTo = -1;
 
-// fade position
+// fade state variables
 int fadePosition = 0;
+long fadeStartMillis = 0;
+double fadeRatio = 0;
+double fadeRatioNum = 0;
+double fadeRatioDen = 0;
 
 // is moving fast?
 boolean isMovingFast = false;
@@ -55,6 +62,9 @@ void setup() {
 
   // init serial output for debugging
   Serial.begin(9600);
+
+  // pushbutton for input
+  pinMode(PIN_BUTTON, INPUT);
 
   // for each LED's pin, tell Arduino it's an output
   for (i = 0; i < LightCount; i++) 
@@ -70,6 +80,9 @@ void setup() {
 void loop(){
   // do the fade from pin to pin
   fadeRenderAndAdvance();
+  
+  // check the pushbutton
+  buttonCheck();
 }
 
 
