@@ -18,6 +18,9 @@ const int PIN_LED_RED = 9;
 const int PIN_LED_GREEN = 10;
 const int PIN_LED_BLUE = 11;
 
+// what pin is the voltimeter connected to, or -1 if none
+const int PIN_METER = -1;
+
 // what pin the pushbutton is connected to
 const int PIN_BUTTON = 7;
 
@@ -38,8 +41,9 @@ const int LightCount = 5;
  * Variables
  */
 
-// all-purpose counter
-int i = 0;        
+// all-purpose variables
+int i = 0;
+int v = 0;
 
 // pin to fade from / to
 int pinFadeFrom = -1;
@@ -55,6 +59,9 @@ double fadeRatioDen = 0;
 // is moving fast?
 boolean isMovingFast = false;
 
+// is meter ascending?
+boolean isMeterAscending = true;
+
 /**
  * Setup
  */
@@ -66,7 +73,7 @@ void setup() {
   // pushbutton for input
   pinMode(PIN_BUTTON, INPUT);
 
-  // for each LED's pin, tell Arduino it's an output
+  // for each LEDs pin, tell Arduino it's an output
   for (i = 0; i < LightCount; i++) 
     setupPinAsLED(Lights[i]);
     

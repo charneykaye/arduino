@@ -25,6 +25,10 @@ void fadeRenderAndAdvance()
 
   // set pins based on fade position
   setPinsFromTo( 255-fadePosition, fadePosition );
+  
+  // if connected, set meter pin based on fade position
+  if (PIN_METER>=0)
+    setPinMeter( fadePosition );
 }
 
 /**
@@ -38,6 +42,9 @@ void fadeAdvanceToNextPin()
   // set the new 'from' pin to the previous 'to'
   // first run will carry over a -1 value
   pinFadeFrom = pinFadeTo;
+  
+  // switch whether the meter is ascending
+  switchMeterAscending();
 
   // set the start timer to the current clock
   fadeStartMillis = millis();
@@ -68,6 +75,21 @@ void setPinsFromTo(int valFrom, int valTo)
 }
 
 /**
+ * Analog write the value of the meter pin
+ */
+void setPinMeter(int valMeter)
+{
+  // put a curve on it, and switch if not ascending
+  v = ( isMeterAscending ? valMeter * valMeter : (255 - valMeter) * (255 - valMeter) ) / 255;  
+  
+  // analog write value
+  analogWrite(PIN_METER,v);
+    
+  // debug
+  DEBUG_setMeterPin(PIN_METER, v);
+}
+
+/**
  * Random Pin LED
  */
 int pinRandomLED() {
@@ -81,4 +103,11 @@ float fadeLengthSeconds() {
   return isButtonOn() ? TIME_TOTAL_FADE_SECONDS_FAST : TIME_TOTAL_FADE_SECONDS_SLOW;
 }
 
-
+/**
+ * Switch whether the meter is ascending
+ */
+ void switchMeterAscending()
+ {
+   // switch it
+   isMeterAscending = isMeterAscending ? false : true;
+ }

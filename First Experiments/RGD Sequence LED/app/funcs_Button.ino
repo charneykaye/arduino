@@ -39,6 +39,7 @@ long lastDebounceTime = 0;  // the last time the output pin was toggled
  */
 void buttonCheck()
 {
+    
   // read the state of the switch into a local variable:
   int reading = digitalRead(PIN_BUTTON);
 

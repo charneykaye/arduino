@@ -51,6 +51,23 @@ void PRINT_setPinsFromTo(int pinFrom, int valFrom, int pinTo, int valTo)
 }
 
 /**
+ * Set Meter Pin #1 = 2.222
+ */
+#ifdef DEBUG_FRAME
+#define DEBUG_setMeterPin(...) PRINT_setMeterPin(__VA_ARGS__)
+#else
+#define DEBUG_setMeterPin(...) /* */
+#endif
+void PRINT_setMeterPin(int Pin, int valMeter)
+{
+  Serial.print("Set Meter Pin #" );
+  Serial.print(Pin);
+  Serial.print(" = ");
+  Serial.print(valMeter);
+  Serial.print("\n");
+}
+
+/**
  * Setup Pin #X as LED
  */
 #ifdef DEBUG_SIGNIFICANT_EVENT
