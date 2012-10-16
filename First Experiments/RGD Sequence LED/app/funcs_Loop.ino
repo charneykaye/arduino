@@ -80,7 +80,7 @@ void setPinsFromTo(int valFrom, int valTo)
 void setPinMeter(int valMeter)
 {
   // put a curve on it, and switch if not ascending
-  v = ( isMeterAscending ? valMeter * valMeter : (255 - valMeter) * (255 - valMeter) ) / 255;  
+  int v = ( isMeterAscending ? valMeter * valMeter : (255 - valMeter) * (255 - valMeter) ) / 255;  
   
   // analog write value
   analogWrite(PIN_METER,v);
@@ -100,7 +100,15 @@ int pinRandomLED() {
  * Frame delay milliseconds
  */
 float fadeLengthSeconds() {
-  return isButtonOn() ? TIME_TOTAL_FADE_SECONDS_FAST : TIME_TOTAL_FADE_SECONDS_SLOW;
+  // grab value
+  int v = numswitchValue();
+  
+  // if numswitchValue is zero or non-numeric, exit with tiny number
+  if (!v>0)
+    return isButtonOn() ? TIME_TOTAL_FADE_SECONDS_FAST : TIME_TOTAL_FADE_SECONDS_SLOW;
+  
+  // total seconds based on numswitch
+  return isButtonOn() ? ( v * TIME_TOTAL_FADE_SECONDS_FAST ) : ( v * TIME_TOTAL_FADE_SECONDS_SLOW );
 }
 
 /**

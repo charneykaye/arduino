@@ -2,11 +2,14 @@
  * Master debug switches, comment out to disable a category of debug
  */
 
+// Debugging for user input
+#define DEBUG_USER_INPUT
+
 // Debugging for every single "loop" frame
 // #define DEBUG_FRAME
 
 // Debugging for significant events
-#define DEBUG_SIGNIFICANT_EVENT
+// #define DEBUG_SIGNIFICANT_EVENT
 
 /**
  * Conditional definitions
@@ -80,6 +83,26 @@ void PRINT_setupPinAsLED(int Pin)
   Serial.print("Setup Pin #" );
   Serial.print(Pin);
   Serial.print(" as LED\n");
+}
+
+/**
+ * Numswitch set to 1
+ */
+#ifdef DEBUG_USER_INPUT
+#define DEBUG_numswitchNumber(...) PRINT_numswitchNumber(__VA_ARGS__)
+#else
+#define DEBUG_numswitchNumber(...) /* */
+#endif
+void PRINT_numswitchNumber(int pinOne, int pinTwo, int pinThree, int pinFour, int Val)
+{
+  Serial.print("Numswitch set to ");
+  Serial.print(pinOne == HIGH ? 1 : 0);
+  Serial.print(pinTwo == HIGH ? 1 : 0);
+  Serial.print(pinThree == HIGH ? 1 : 0);
+  Serial.print(pinFour == HIGH ? 1 : 0);
+  Serial.print(" = ");
+  Serial.print(Val);
+  Serial.print("\n");
 }
 
 /**

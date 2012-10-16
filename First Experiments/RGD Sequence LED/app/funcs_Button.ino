@@ -11,6 +11,15 @@ int buttonLastState = LOW;   // the previous reading from the input pin
 // will quickly become a bigger number than can be stored in an int.
 long lastDebounceTime = 0;  // the last time the output pin was toggled
 
+/**
+ * Button Setup
+ */
+void buttonSetup()
+{
+  // pushbutton for input
+  pinMode(PIN_BUTTON, INPUT);
+}
+
 /* 
  Debounce
  

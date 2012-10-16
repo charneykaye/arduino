@@ -24,8 +24,16 @@ const int PIN_METER = -1;
 // what pin the pushbutton is connected to
 const int PIN_BUTTON = 7;
 
-// pushbutton debounce time milliseconds; increase if the output flickers
+// what 4 digital pins the number switch is connected to (besides its ground)
+// these pins represent the 1, 2, 4, and 8 digit of a binary number
+const int PIN_NUMSWITCH_BINARY_ONE = 2;
+const int PIN_NUMSWITCH_BINARY_TWO = 4;
+const int PIN_NUMSWITCH_BINARY_FOUR = 12;
+const int PIN_NUMSWITCH_BINARY_EIGHT = 13;
+
+// button / switch debounce time milliseconds; increase if the output flickers
 const long BUTTON_DEBOUNCE_DELAY_MILLIS = 50;
+const long NUMSWITCH_DEBOUNCE_DELAY_MILLIS = 50;
 
 // array of LED pins to setup, with a hard-coded total
 const int Lights[] = {
@@ -43,7 +51,6 @@ const int LightCount = 5;
 
 // all-purpose variables
 int i = 0;
-int v = 0;
 
 // pin to fade from / to
 int pinFadeFrom = -1;
@@ -70,8 +77,11 @@ void setup() {
   // init serial output for debugging
   Serial.begin(9600);
 
-  // pushbutton for input
-  pinMode(PIN_BUTTON, INPUT);
+  // setup button
+  buttonSetup();
+  
+  // setup numswitch
+  numswitchSetup();
 
   // for each LEDs pin, tell Arduino it's an output
   for (i = 0; i < LightCount; i++) 
@@ -90,6 +100,9 @@ void loop(){
   
   // check the pushbutton
   buttonCheck();
+  
+  // check the numswitch
+  numswitchCheck();
 }
 
 
